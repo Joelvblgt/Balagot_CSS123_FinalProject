@@ -10,6 +10,9 @@ public class LineRenderer extends ShapeRenderer {
 
     @Override
     public void render(Graphics g, Shape shape, boolean xor) {
+        if(!shape.isVisible()){
+            return;
+        }
 
         int x = shape.getLocation().x;
         int y = shape.getLocation().y;

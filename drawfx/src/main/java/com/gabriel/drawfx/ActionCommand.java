@@ -6,8 +6,10 @@ public class ActionCommand {
     static final public String RECT = "rectangle";
     static final public String LINE = "Line";
     static final public String ELLIPSE = "ellipse";
+    static final public String IMAGEFILE = "imagefile";
     static final public String IMAGE = "image";
     static final public String TEXT = "text";
+    static final public String FONT = "font";
     static final public String SELECT = "select";
     static final public String COLOR = "color";
     static final public String FILL = "fill";
@@ -15,4 +17,5 @@ public class ActionCommand {
     static final public String OPEN = "open";
     static final public String SAVEAS = "saveas";
     static final public String NEW= "new";
+    static final public String DELETE= "delete";
 }

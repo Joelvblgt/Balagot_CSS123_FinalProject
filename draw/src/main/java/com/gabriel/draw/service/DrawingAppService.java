@@ -19,6 +19,7 @@ public class DrawingAppService implements AppService {
 
     @Setter
     DrawingView drawingView;
+
     ImageFileService imageFileService;
     MoverService moverService;
     ScalerService scalerService;
@@ -35,6 +36,7 @@ public class DrawingAppService implements AppService {
         imageFileService = new ImageFileService();
         drawing.setDrawMode(DrawMode.Idle);
         drawing.setShapeMode(ShapeMode.Ellipse);
+        drawing.setColor(Color.BLUE);
     }
 
     @Override
@@ -95,7 +97,18 @@ public class DrawingAppService implements AppService {
 
     @Override
     public void setFill(Color color) {
-        drawing.setFill(color);
+        List<Shape> shapes = drawing.getShapes();
+        boolean isEmpty = true;
+        for (Shape shape : shapes) {
+            if (shape.isSelected()) {
+                shape.setFill(color);
+                shape.getRendererService().render(drawingView.getGraphics(), shape, false);
+                isEmpty = false;
+            }
+        }
+        if(isEmpty){
+            drawing.setFill(color);
+        }
     }
 
     @Override
@@ -176,22 +189,12 @@ public class DrawingAppService implements AppService {
 
     @Override
     public void open(String filename) {
-        xmlDocumentService.open(filename);
+        xmlDocumentService.open();
     }
 
     @Override
     public void save() {
-        xmlDocumentService.saveAs(drawing.getFilename());
-    }
-
-    @Override
-    public void saveas(String filename) {
-        xmlDocumentService.saveAs(filename);
-    }
-
-    @Override
-    public void newDrawing() {
-
+        xmlDocumentService.save();
     }
 
     @Override
@@ -224,13 +227,7 @@ public class DrawingAppService implements AppService {
 
     @Override
     public Shape getSelectedShape() {
-        List<Shape> shapes = drawing.getShapes();
-        for (Shape shape : shapes){
-            if(shape.isSelected()){
-                return shape;
-            }
-        }
-        return null;
+        return drawing.getSelectedShape();
     }
     @Override
     public List<Shape> getSelectedShapes() {
@@ -269,7 +266,7 @@ public class DrawingAppService implements AppService {
     public int getThickness() {
         Shape seleectedShape = drawing.getSelectedShape();
         if(seleectedShape == null ){
-           return drawing.getThickness();
+            return drawing.getThickness();
         }
         else {
             return seleectedShape.getThickness();
@@ -277,13 +274,13 @@ public class DrawingAppService implements AppService {
     }
 
     @Override
-    public void setXLocation(int thickness) {
+    public void setXLocation(int x) {
         Shape seleectedShape = drawing.getSelectedShape();
         if(seleectedShape == null ){
-            drawing.setThickness(thickness);
+            drawing.getLocation().x = x;
         }
         else {
-            seleectedShape.setThickness(thickness);
+            seleectedShape.getLocation().x = x;
         }
 
     }
@@ -358,8 +355,7 @@ public class DrawingAppService implements AppService {
     public int getHeight() {
         Shape selectedShape = drawing.getSelectedShape();
         if(selectedShape == null ){
-            return 0;
-            //return drawing.getHeight();
+            return drawing.getHeight();
         }
         else {
             return selectedShape.getHeight();
@@ -367,18 +363,25 @@ public class DrawingAppService implements AppService {
     }
 
     @Override
-    public void setImageFileename() {
-        imageFileService.setImage(drawing);
+    public void setImageFilename(String imageFilename) {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape == null ){
+            drawing.setImageFilename(imageFilename);
+        }
+        else {
+            selectedShape.setImageFilename(imageFilename);;
+        }
     }
 
     @Override
-    public void setImageFileename(String filename) {
-        drawing.setImageFilename(filename);
-    }
-
-    @Override
-    public String getImageFileename() {
-        return drawing.getImageFilename();
+    public String getImageFilename() {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape == null ){
+            return drawing.getImageFilename();
+        }
+        else {
+            return selectedShape.getImageFilename();
+        }
     }
 
     @Override
@@ -401,6 +404,221 @@ public class DrawingAppService implements AppService {
         }
         else {
             Font font = new Font(selectedShape.getFont().getFamily(), selectedShape.getFont().getStyle(), fontSize);
+            selectedShape.setFont(font);
+        }
+    }
+
+    @Override
+    public Color getStartColor() {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            return drawing.getStartColor();
+        }
+        else {
+            return selectedShape.getStartColor();
+        }
+    }
+
+    @Override
+    public void setStartColor(Color color) {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(drawing.getSelectedShape()==null) {
+            drawing.setStartColor(color);
+        }
+        else {
+            getSelectedShape().setStartColor(color);
+        }
+    }
+
+    @Override
+    public Color getEndColor() {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            return drawing.getEndColor();
+        }
+        else {
+            return selectedShape.getEndColor();
+        }
+    }
+
+    @Override
+    public void setEndColor(Color color) {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            drawing.setEndColor(color);
+        }
+        else {
+            selectedShape.setEndColor(color);
+        }
+    }
+
+    @Override
+    public boolean isGradient() {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            return drawing.isGradient();
+        }
+        else {
+            return selectedShape.isGradient();
+        }
+    }
+
+    @Override
+    public void setIsGradient(boolean yes) {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            drawing.setGradient(yes);
+        }
+        else {
+            selectedShape.setGradient(yes);
+        }
+    }
+
+    @Override
+    public boolean isVisible() {
+        Shape selectedShape = drawing.getSelectedShape();
+        if (selectedShape == null) {
+            return drawing.isVisible();
+        } else {
+            return selectedShape.isVisible();
+        }
+    }
+    @Override
+    public void setIsVisible(boolean yes) {
+        Shape selectedShape = drawing.getSelectedShape();
+        if (selectedShape == null) {
+            drawing.setVisible(yes);
+        } else {
+            selectedShape.setVisible(yes);
+        }
+    }
+
+    public void delete() {
+        List<Shape> shapes = drawing.getShapes();
+        for(Shape shape : shapes) {
+            if(shape.isSelected()) {
+                delete(shape);
+            }
+        }
+    }
+
+    @Override
+    public void setStartX(int startx) {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            drawing.getStart().x = startx;
+        }
+        else {
+            selectedShape.getStart().x = startx;
+        }
+    }
+
+    @Override
+    public int getStartX() {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            return drawing.getStart().x;
+        }
+        else {
+            return selectedShape.getStart().x;
+        }
+    }
+
+    @Override
+    public void setStarty(int starty) {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            drawing.getStart().y = starty;
+        }
+        else {
+            selectedShape.getStart().y = starty;
+        }
+    }
+
+    @Override
+    public int getStarty() {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            return drawing.getStart().x;
+        }
+        else {
+            return selectedShape.getStart().x;
+        }
+    }
+
+    @Override
+    public void setEndx(int endx) {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            drawing.getEnd().x = endx;
+        }
+        else {
+            selectedShape.getEnd().x = endx;
+        }
+    }
+
+    @Override
+    public int getEndx() {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            return drawing.getEnd().x;
+        }
+        else {
+            return selectedShape.getEnd().x;
+        }
+    }
+
+    @Override
+    public void setEndy(int endy) {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            drawing.getEnd().y = endy;
+        }
+        else {
+            selectedShape.getEnd().y = endy;
+        }
+    }
+
+    @Override
+    public int getEndy() {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            return drawing.getEnd().y;
+        }
+        else {
+            return selectedShape.getEnd().y;
+        }
+    }
+
+    @Override
+    public String getText() {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            return drawing.getText();
+        }
+        else {
+            return selectedShape.getText();
+        }
+    }
+
+    @Override
+    public Font getFont() {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            return drawing.getFont();
+        }
+        else {
+            return selectedShape.getFont();
+        }
+    }
+
+    @Override
+    public void setFont(Font font) {
+        Shape selectedShape = drawing.getSelectedShape();
+        if(selectedShape==null) {
+            drawing.setFont(font);
+        }
+        else {
             selectedShape.setFont(font);
         }
     }

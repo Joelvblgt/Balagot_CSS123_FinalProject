@@ -12,14 +12,14 @@ public class GPanel extends JPanel {
     private BufferedImage image;
 
     public GPanel(String imgFile){
-            try (InputStream is = getClass().getResourceAsStream("/" + imgFile + ".png")) {
-                if (is == null) {
-                    throw new IOException("Image not found: " + imgFile);
-                }
-                image = ImageIO.read(is);
-            } catch (IOException e) {
-                e.printStackTrace();
+        try (InputStream is = getClass().getResourceAsStream("/" + imgFile + ".png")) {
+            if (is == null) {
+                throw new IOException("Image not found: " + imgFile);
             }
+            image = ImageIO.read(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @Override
     protected void paintComponent(Graphics g) {

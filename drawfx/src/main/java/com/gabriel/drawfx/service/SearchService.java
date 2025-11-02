@@ -9,12 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 public final class SearchService {
 
+    public Shape getSelectedShape(Drawing drawing){
+        return drawing.getSelectedShape();
+    }
+
     public void search(AppService appService, Point p) {
         search(appService, p,true);
     }
 
     public void search(AppService appService, Point p, boolean single) {
         Drawing drawing = appService.getDrawing();
+        drawing.setSelectedShape(null);
         List<Shape> shapes = drawing.getShapes();
         int r = appService.getSearchRadius();
 

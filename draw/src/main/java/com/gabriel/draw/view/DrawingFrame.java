@@ -13,6 +13,9 @@ import com.gabriel.drawfx.service.AppService;
 import com.gabriel.property.PropertyOptions;
 import com.gabriel.property.event.PropertyEventAdapter;
 import com.gabriel.property.property.Property;
+import com.gabriel.draw.command.*;
+import com.gabriel.drawfx.command.Command;
+import com.gabriel.drawfx.command.CommandService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,6 +47,7 @@ public class DrawingFrame extends JFrame {
         setLayout(new BorderLayout());
 
         actionListener = new ActionController(appService);
+        actionListener.setFrame(this);
         drawingMenuBar = new DrawingMenuBar( actionListener);
 
         setJMenuBar(drawingMenuBar);
@@ -112,73 +116,150 @@ public class DrawingFrame extends JFrame {
         repaint();
     }
 
+    // Replace the EventListener class in DrawingFrame with this:
+// This uses your EXISTING command classes
+
     class EventListener extends PropertyEventAdapter {
         @Override
         public void onPropertyUpdated(Property property) {
-            Shape shape  = appService.getSelectedShape();
+            Shape shape = appService.getSelectedShape();
+
             if(property.getName().equals("Current Shape")){
-                if(shape ==null) {
+                if(shape == null) {
                     appService.setShapeMode((ShapeMode) property.getValue());
                 }
             }
-            if(property.getName().equals("Fore color")){
-                if(shape ==null) {
+            else if(property.getName().equals("Fore color")){
+                if(shape == null) {
+                    // Use existing ChangeColorCommand through appService
                     appService.setColor((Color) property.getValue());
                 } else {
-                    shape.setColor((Color) property.getValue());
+                    // Direct command for selected shape
+                    Command command = new ChangeColorCommand(appService, (Color) property.getValue());
+                    CommandService.ExecuteCommand(command);
                 }
             }
-            if(property.getName().equals("Fill color")){
-                if(shape ==null) {
-                    appService.setFill((Color)property.getValue());
+            else if(property.getName().equals("Fill color")){
+                if(shape == null) {
+                    appService.setFill((Color) property.getValue());
                 } else {
-                    shape.setFill((Color) property.getValue());
+                    // Use existing ChangeFillCommand
+                    Command command = new ChangeFillCommand(appService, (Color) property.getValue());
+                    CommandService.ExecuteCommand(command);
                 }
             }
-            if(property.getName().equals("Line Thickness")){
-                if(shape ==null) {
-                    appService.setThickness((int)property.getValue());
+            else if(property.getName().equals("Line Thickness")){
+                if(shape == null) {
+                    appService.setThickness((int) property.getValue());
                 } else {
-                    shape.setThickness((int) property.getValue());
+                    // Use existing ChangeThicknessCommand
+                    Command command = new ChangeThicknessCommand(appService, (int) property.getValue());
+                    CommandService.ExecuteCommand(command);
                 }
             }
-            if(property.getName().equals("X Location")){
-                if(shape ==null) {
-                    ;
-                } else {
-                    Point p = shape.getLocation();
-                    p.x = (int) property.getValue();
-                    shape.setLocation(p);
+            else if(property.getName().equals("X Location")){
+                if(shape != null) {
+                    // Use existing ChangeLocationCommand
+                    Command command = ChangeLocationCommand.forX(appService, (int) property.getValue());
+                    CommandService.ExecuteCommand(command);
                 }
             }
-            if(property.getName().equals("Y Location")){
-                if(shape ==null) {
-                    ;
-                } else {
-                    Point p = shape.getLocation();
-                    p.y = (int) property.getValue();
-                    shape.setLocation(p);
+            else if(property.getName().equals("Y Location")){
+                if(shape != null) {
+                    // Use existing ChangeLocationCommand
+                    Command command = ChangeLocationCommand.forY(appService, (int) property.getValue());
+                    CommandService.ExecuteCommand(command);
                 }
             }
-            if(property.getName().equals("Width")){
-                if(shape ==null) {
-                    ;
-                } else {
-                    int width = shape.getWidth();
-                    shape.setWidth(width);
+            else if(property.getName().equals("Width")){
+                if(shape != null) {
+                    // Use existing ChangeDimensionsCommand
+                    Command command = ChangeDimensionsCommand.forWidth(appService, (int) property.getValue());
+                    CommandService.ExecuteCommand(command);
                 }
             }
-            if(property.getName().equals("Height")){
-                if(shape ==null) {
-                    ;
-                } else {
-                    int height = (int) property.getValue();
-                    shape.setHeight(height);
+            else if(property.getName().equals("Height")){
+                if(shape != null) {
+                    // Use existing ChangeDimensionsCommand
+                    Command command = ChangeDimensionsCommand.forHeight(appService, (int) property.getValue());
+                    CommandService.ExecuteCommand(command);
+                }
+            }
+            else if(property.getName().equals("Text")){
+                if(shape != null) {
+                    // Use existing ChangeTextCommand
+                    Command command = new ChangeTextCommand(appService, (String) property.getValue());
+                    CommandService.ExecuteCommand(command);
+                }
+            }
+            else if(property.getName().equals("Font size")){
+                if(shape != null) {
+                    Font font = shape.getFont();
+                    if(font != null) {
+                        Font newFont = new Font(font.getFamily(), font.getStyle(), (int) property.getValue());
+                        // Use existing ChangeFontCommand
+                        Command command = new ChangeFontCommand(appService, newFont);
+                        CommandService.ExecuteCommand(command);
+                    }
+                }
+            }
+            else if(property.getName().equals("Font family")){
+                if(shape != null) {
+                    Font font = shape.getFont();
+                    if(font != null) {
+                        Font newFont = new Font((String) property.getValue(), font.getStyle(), font.getSize());
+                        // Use existing ChangeFontCommand
+                        Command command = new ChangeFontCommand(appService, newFont);
+                        CommandService.ExecuteCommand(command);
+                    }
+                }
+            }
+            else if(property.getName().equals("Font style")){
+                if(shape != null) {
+                    Font font = shape.getFont();
+                    if(font != null) {
+                        Font newFont = new Font(font.getFamily(), (int) property.getValue(), font.getSize());
+                        // Use existing ChangeFontCommand
+                        Command command = new ChangeFontCommand(appService, newFont);
+                        CommandService.ExecuteCommand(command);
+                    }
+                }
+            }
+            else if(property.getName().equals("Start color")){
+                if(shape != null) {
+                    // Use existing ChangeGradientCommand
+                    Command command = new ChangeGradientCommand(appService, shape.isGradient(),
+                            (Color) property.getValue(), shape.getEndColor());
+                    CommandService.ExecuteCommand(command);
+                }
+            }
+            else if(property.getName().equals("End color")){
+                if(shape != null) {
+                    // Use existing ChangeGradientCommand
+                    Command command = new ChangeGradientCommand(appService, shape.isGradient(),
+                            shape.getStartColor(), (Color) property.getValue());
+                    CommandService.ExecuteCommand(command);
+                }
+            }
+            else if(property.getName().equals("IsGradient")){
+                if(shape != null) {
+                    // Use existing ChangeGradientCommand
+                    Command command = new ChangeGradientCommand(appService, (Boolean) property.getValue(),
+                            shape.getStartColor(), shape.getEndColor());
+                    CommandService.ExecuteCommand(command);
+                }
+            }
+            else if(property.getName().equals("IsVisible")){
+                if(shape != null) {
+                    // Direct modification - no command exists for visibility
+                    // You can create one if needed
+                    shape.setVisible((Boolean) property.getValue());
                 }
             }
 
             drawingView.repaint();
         }
     }
+
 }
 

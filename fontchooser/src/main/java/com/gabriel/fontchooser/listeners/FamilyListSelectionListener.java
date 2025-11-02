@@ -17,9 +17,9 @@ public class FamilyListSelectionListener implements ListSelectionListener {
         if (!e.getValueIsAdjusting()) {
             Font oldFont = fontContainer.getSelectedFont();
             Font newFont = new Font(
-                fontContainer.getSelectedFamily(),
-                oldFont.getStyle(),
-                (int) fontContainer.getSelectedSize());
+                    fontContainer.getSelectedFamily(),
+                    oldFont.getStyle(),
+                    (int) fontContainer.getSelectedSize());
 
             fontContainer.setSelectedFont(newFont);
             fontContainer.setPreviewFont(newFont);

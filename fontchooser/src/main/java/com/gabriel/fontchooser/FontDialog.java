@@ -185,10 +185,10 @@ public class FontDialog extends JDialog {
     }
 
     public  void setPreviewText(String text) {
-        chooser.setPreviewText(text);
+        getFontChooser().setPreviewText(text);
     }
 
     public String getPreviewText(){
-        return chooser.getPreviewText();
+        return getFontChooser().getPreviewText();
     }
 }

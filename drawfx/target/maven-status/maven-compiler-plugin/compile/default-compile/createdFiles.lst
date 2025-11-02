@@ -1,0 +1,17 @@
+com\gabriel\drawfx\ActionCommand.class
+com\gabriel\drawfx\DrawMode.class
+com\gabriel\drawfx\service\DocumentService.class
+com\gabriel\drawfx\util\Normalizer.class
+com\gabriel\drawfx\service\AppService.class
+com\gabriel\drawfx\service\ShapeService.class
+com\gabriel\drawfx\service\SearchService.class
+com\gabriel\drawfx\service\MoverService.class
+com\gabriel\drawfx\renderer\Renderer.class
+com\gabriel\drawfx\model\Drawing.class
+com\gabriel\drawfx\command\Command.class
+com\gabriel\drawfx\model\Shape.class
+com\gabriel\drawfx\renderer\ShapeRenderer.class
+com\gabriel\drawfx\service\ScalerService.class
+com\gabriel\drawfx\command\CommandService.class
+com\gabriel\drawfx\SelectionMode.class
+com\gabriel\drawfx\ShapeMode.class

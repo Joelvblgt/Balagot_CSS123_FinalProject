@@ -12,7 +12,7 @@ public final class MoverService {
         int dy = end.y - start.y;
         shape.getLocation().x +=dx;
         shape.getLocation().y += dy;
-     }
+    }
     public void  move(Drawing drawing, Point start, Point end){
         List<Shape> shapes = drawing.getShapes();
         for (Shape shape : shapes ){

@@ -48,8 +48,6 @@ public interface AppService {
 
     void open(String filename);
     void save();
-    void saveas(String filename);
-    void newDrawing();
     String getFileName();
 
     void select(Shape shape);
@@ -72,10 +70,33 @@ public interface AppService {
     void setHeight(int height);
     int getHeight();
 
-    void setImageFileename();
-    void setImageFileename(String filename);
-    String getImageFileename();
+    void setImageFilename(String filename);
+    String getImageFilename();
     void setText(String text);
 
     void setFontSize(int fontSize);
+
+    Color getStartColor();
+    void setStartColor( Color color);
+    Color getEndColor();
+    void setEndColor( Color color);
+    boolean isGradient();
+    void setIsGradient(boolean yes);
+    boolean isVisible();
+    void setIsVisible(boolean yes);
+    void delete();
+
+    void setStartX(int startx);
+    int  getStartX();
+    void setStarty(int starty);
+    int  getStarty();
+
+    void setEndx(int endxy);
+    int  getEndx();
+    void setEndy(int endy);
+    int  getEndy();
+
+    String getText();
+    Font getFont();
+    void setFont(Font font);
 }

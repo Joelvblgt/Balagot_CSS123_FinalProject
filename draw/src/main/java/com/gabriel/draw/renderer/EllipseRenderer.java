@@ -10,8 +10,10 @@ public class EllipseRenderer extends ShapeRenderer {
 
     @Override
     public void render(Graphics g,  Shape shape, boolean xor) {
+        if(!shape.isVisible()){
+            return;
+        }
         Ellipse ellipse = (Ellipse) shape;
-
         int x = shape.getLocation().x;
         int y = shape.getLocation().y;
         int width = shape.getWidth() ;
@@ -25,7 +27,13 @@ public class EllipseRenderer extends ShapeRenderer {
         } else {
             g2.setColor(shape.getColor());
             if(shape.getFill() != null){
-                g2.setColor(shape.getFill());
+                if(shape.isGradient()) {
+                    GradientPaint gp = new GradientPaint(shape.getLocation().x + shape.getStart().x, shape.getLocation().y + shape.getStart().y, shape.getStartColor(), shape.getLocation().x + width + shape.getEnd().x, shape.getLocation().y + shape.getEnd().y + shape.getHeight(), shape.getEndColor());
+                    g2.setPaint(gp);
+                }
+                else{
+                    g2.setColor(shape.getFill());
+                }
                 g2.fillOval(x,y,width, height);
                 g2.setColor(shape.getColor());
             }

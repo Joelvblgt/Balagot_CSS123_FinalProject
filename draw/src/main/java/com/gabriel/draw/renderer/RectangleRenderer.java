@@ -9,6 +9,9 @@ public class RectangleRenderer extends ShapeRenderer {
 
     @Override
     public void render(Graphics g, Shape shape, boolean xor) {
+        if(!shape.isVisible()){
+            return;
+        }
 
         int x = shape.getLocation().x;
         int y = shape.getLocation().y;
@@ -30,10 +33,12 @@ public class RectangleRenderer extends ShapeRenderer {
         } else {
             g2.setColor(shape.getColor());
             if(shape.getFill() != null){
-                GradientPaint gp = new GradientPaint(0, 0, shape.getFill(), 0, height, Color.WHITE);
-                g2.setPaint(gp);
-
-                //g2.setColor(shape.getFill());
+                if(shape.isGradient()) {
+                    GradientPaint gp = new GradientPaint(shape.getLocation().x+ shape.getStart().x, shape.getLocation().y + shape.getStart().y, shape.getStartColor(), shape.getLocation().x+ width+ shape.getEnd().x, shape.getLocation().y+ shape.getEnd().y + shape.getHeight(), shape.getEndColor());
+                    g2.setPaint(gp);
+                } else {
+                    g2.setColor(shape.getFill());
+                }
                 g2.fillRect(x,y,width, height);
                 g2.setColor(shape.getColor());
             }

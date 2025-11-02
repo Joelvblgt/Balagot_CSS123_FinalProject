@@ -16,3 +16,4 @@ public class MonospacedListener implements ItemListener {
         familyListModel.setMonospacedOnly(e.getItemSelectable().getSelectedObjects() != null);
     }
 }
+

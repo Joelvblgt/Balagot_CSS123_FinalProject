@@ -15,12 +15,11 @@ public class DrawingMenuBar extends JMenuBar {
 
     ActionListener actionListener;
 
-    public DrawingMenuBar( ActionListener actionListener ){
+    public DrawingMenuBar(ActionListener actionListener) {
         super();
-        this.actionListener =actionListener;
+        this.actionListener = actionListener;
 
-// Insert the File menu and menuitems
-
+        // Insert the File menu and menuitems
         JMenu menu = new JMenu("File");
         menu.setMnemonic(KeyEvent.VK_F);
 
@@ -36,9 +35,8 @@ public class DrawingMenuBar extends JMenuBar {
         menuItem.setActionCommand(ActionCommand.OPEN);
         menu.add(menuItem);
 
-
         menuItem = new JMenuItem("SaveAs");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
         menuItem.addActionListener(actionListener);
         menuItem.setActionCommand(ActionCommand.SAVEAS);
         menu.add(menuItem);
@@ -51,24 +49,25 @@ public class DrawingMenuBar extends JMenuBar {
 
         add(menu);
 
-
+        // Edit menu
         menu = new JMenu("Edit");
         menu.setMnemonic(KeyEvent.VK_E);
 
-        menuItem = new JMenuItem("Umdo");
+        menuItem = new JMenuItem("Undo");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK));
         menuItem.addActionListener(actionListener);
         menuItem.setActionCommand(ActionCommand.UNDO);
         menu.add(menuItem);
 
         menuItem = new JMenuItem("Redo");
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));;
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
         menuItem.addActionListener(actionListener);
         menuItem.setActionCommand(ActionCommand.REDO);
         menu.add(menuItem);
 
         add(menu);
 
+        // Draw menu
         menu = new JMenu("Draw");
         menu.setMnemonic(KeyEvent.VK_D);
 
@@ -102,24 +101,24 @@ public class DrawingMenuBar extends JMenuBar {
         menuItem.addActionListener(actionListener);
         menu.add(menuItem);
 
-
         add(menu);
 
-        // Properties
+        // Properties menu
         menu = new JMenu("Properties");
         menu.setMnemonic(KeyEvent.VK_P);
 
         menuItem = new JMenuItem("Color");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
         menuItem.setActionCommand(ActionCommand.COLOR);
         menuItem.addActionListener(actionListener);
         menu.add(menuItem);
 
         menuItem = new JMenuItem("Fill");
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.CTRL_DOWN_MASK | InputEvent.SHIFT_DOWN_MASK));
         menuItem.setActionCommand(ActionCommand.FILL);
         menuItem.addActionListener(actionListener);
         menu.add(menuItem);
 
         this.add(menu);
-
     }
 }

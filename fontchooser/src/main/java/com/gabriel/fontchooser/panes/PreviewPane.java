@@ -2,6 +2,7 @@ package com.gabriel.fontchooser.panes;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.nio.charset.StandardCharsets;
 import java.util.ResourceBundle;
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
@@ -15,7 +16,7 @@ public class PreviewPane extends JScrollPane {
 
     public PreviewPane() {
         ResourceBundle resourceBundle = ResourceBundle.getBundle("FontChooser");
-        previewText.setText(resourceBundle.getString("font.preview.text"));
+        previewText.setText(previewText.getText());
         setPreviewTextBorder();
         setPreferredSize(new Dimension(200, 80));
         setViewportView(previewText);
@@ -38,4 +39,11 @@ public class PreviewPane extends JScrollPane {
         previewText.setFont(font);
     }
 
+    public void setPreviewText(String previewText) {
+        this.previewText.setText(previewText);
+    }
+
+    public  String getPreviewText(){
+        return this.previewText.getText();
+    }
 }

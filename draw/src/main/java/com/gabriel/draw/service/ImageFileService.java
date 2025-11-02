@@ -16,7 +16,7 @@ public class ImageFileService {
         {
             homeFolder = FileSystemView.getFileSystemView().getHomeDirectory().getPath();
         }
-                else
+        else
 
         {
             File file = new File(drawing.getImageFilename());
@@ -27,11 +27,11 @@ public class ImageFileService {
         FileTypeFilter pngTypeFilter = new FileTypeFilter("png", "PNG Image Documents");
         FileTypeFilter jpgTypeFilter = new FileTypeFilter("jpg", "JPEG Image Documents");
         FileTypeFilter gifTypeFilter = new FileTypeFilter("gif", "GIF Image Documents");
-                fileChooser.addChoosableFileFilter(pngTypeFilter);
-                fileChooser.addChoosableFileFilter(jpgTypeFilter);
-                fileChooser.addChoosableFileFilter(gifTypeFilter);
+        fileChooser.addChoosableFileFilter(pngTypeFilter);
+        fileChooser.addChoosableFileFilter(jpgTypeFilter);
+        fileChooser.addChoosableFileFilter(gifTypeFilter);
         int result = fileChooser.showOpenDialog(null);
-                if(result ==JFileChooser.APPROVE_OPTION)
+        if(result ==JFileChooser.APPROVE_OPTION)
 
         {
             String filename = fileChooser.getSelectedFile().getAbsolutePath();

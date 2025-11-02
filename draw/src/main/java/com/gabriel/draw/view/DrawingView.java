@@ -5,11 +5,14 @@ import com.gabriel.draw.controller.DrawingWindowController;
 import com.gabriel.drawfx.model.Drawing;
 import com.gabriel.drawfx.model.Shape;
 import com.gabriel.drawfx.service.AppService;
+import lombok.Setter;
+
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
 
 public class DrawingView extends JPanel {
+
     AppService appService;
 
     public DrawingView(AppService appService){
@@ -29,4 +32,6 @@ public class DrawingView extends JPanel {
             shape.getRendererService().render(g, shape, false);
         }
     }
+
+
 }

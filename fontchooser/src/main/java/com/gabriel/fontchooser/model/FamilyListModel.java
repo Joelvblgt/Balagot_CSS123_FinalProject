@@ -80,7 +80,7 @@ public class FamilyListModel extends AbstractListModel<String> {
         FontMetrics metrics = component.getFontMetrics(new Font(fontFamily.getName(), Font.PLAIN, 12));
         int width = metrics.charWidth(MONOSPACE_CHARS[0]);
         return width > 1 && IntStream.range(1, MONOSPACE_CHARS.length)
-            .noneMatch(i -> Math.abs(metrics.charWidth(MONOSPACE_CHARS[i]) - width) > 2);
+                .noneMatch(i -> Math.abs(metrics.charWidth(MONOSPACE_CHARS[i]) - width) > 2);
     }
 
     public void setMonospacedOnly(boolean monospacedOnly) {

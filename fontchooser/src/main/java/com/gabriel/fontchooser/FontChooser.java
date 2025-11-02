@@ -31,7 +31,7 @@ public class FontChooser extends JPanel implements FontContainer {
 
     private static final String SELECTION_MODEL_PROPERTY = "selectionModel";
 
-    private static final long serialVersionUID = -1587096935072345808L;
+    //private static final long serialVersionUID = -1587096935072345808L;
 
     private FontSelectionModel selectionModel;
 
@@ -301,12 +301,12 @@ public class FontChooser extends JPanel implements FontContainer {
 
     @Override
     public String getPreviewText(){
-        return  previewLabel.getText();
+        return  previewPane.getPreviewText();
     }
 
     @Override
     public void setPreviewText(String text){
-        previewLabel.setText(text);
+        previewPane.setPreviewText(text);
     }
 
 }
